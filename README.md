@@ -1,4 +1,4 @@
-# Fullstack WebApp : Next.js 13, React, Socket.io, Prisma, Tailwind, MySQL 
+#  WebApp : Next.js 13, React, Socket.io, Prisma, Tailwind, MySQL 
 
 
 This is a repository for ChatterVerse: Next.js 13, React, Socket.io, Prisma, Tailwind, MySQL 
@@ -21,7 +21,7 @@ Features:
 - Light / Dark mode
 - Websocket fallback: Polling with alerts
 - ORM using Prisma
-- MySQL database using Planetscale
+- MySQL database using neondb
 - Authentication with Clerk
 
 ### Prerequisites
