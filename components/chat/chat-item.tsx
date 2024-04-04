@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole, Profile,Priority} from "@prisma/client";
+import { Member, MemberRole, Profile} from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -23,6 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
+
+
+type Priority = "LOW" | "MID" | "HIGH";
 
 interface ChatItemProps {
   id: string;
@@ -128,8 +131,8 @@ export const ChatItem = ({
 
   const fileType = fileUrl?.split(".").pop();
 
-  const isMid = priority === Priority.MID;
-  const isHigh = priority === Priority.HIGH;
+  const isMid = priority === "MID";
+  const isHigh = priority === "HIGH";
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
