@@ -5,8 +5,8 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole, Profile } from "@prisma/client";
-import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
+import { Member, MemberRole, Profile,Priority} from "@prisma/client";
+import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
@@ -37,12 +37,19 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
+  priority:Priority;
 };
 
 const roleIconMap = {
   "GUEST": null,
   "MODERATOR": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
   "ADMIN": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
+}
+
+const priorityIconMap = {
+  "LOW": null,
+  "MID": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
+  "HIGH": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
 }
 
 const formSchema = z.object({
@@ -59,7 +66,8 @@ export const ChatItem = ({
   currentMember,
   isUpdated,
   socketUrl,
-  socketQuery
+  socketQuery,
+  priority,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
@@ -120,6 +128,8 @@ export const ChatItem = ({
 
   const fileType = fileUrl?.split(".").pop();
 
+  const isMid = priority === Priority.MID;
+  const isHigh = priority === Priority.HIGH;
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
@@ -225,6 +235,14 @@ export const ChatItem = ({
       </div>
       {canDeleteMessage && (
         <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
+          {!isOwner && (
+            <ActionTooltip label="Edit">
+              <ChevronUp
+                onClick={() => setIsEditing(true)}
+                className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+              />
+            </ActionTooltip>
+          )}
           {canEditMessage && (
             <ActionTooltip label="Edit">
               <Edit
