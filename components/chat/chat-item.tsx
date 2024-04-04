@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole, Profile} from "@prisma/client";
+import { Member, MemberRole, Profile,$Enums} from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 
 
-type Priority = "LOW" | "MID" | "HIGH";
+// type Priority = "LOW" | "MID" | "HIGH";
 
 interface ChatItemProps {
   id: string;
@@ -40,7 +40,7 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  priority:Priority;
+  priority:$Enums.Priority;
 };
 
 const roleIconMap = {
@@ -131,8 +131,8 @@ export const ChatItem = ({
 
   const fileType = fileUrl?.split(".").pop();
 
-  const isMid = priority === "MID";
-  const isHigh = priority === "HIGH";
+  const isMid = priority === $Enums.Priority.MID;
+  const isHigh = priority === $Enums.Priority.HIGH;
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;

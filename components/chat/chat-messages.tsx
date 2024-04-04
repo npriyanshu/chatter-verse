@@ -2,7 +2,7 @@
 
 import { Fragment, useRef, ElementRef } from "react";
 import { format } from "date-fns";
-import { Member, Message, Profile } from "@prisma/client";
+import { Member, Message, Profile,$Enums } from "@prisma/client";
 import { Loader2, ServerCrash } from "lucide-react";
 
 import { useChatQuery } from "@/hooks/use-chat-query";
@@ -17,7 +17,7 @@ const DATE_FORMAT = "d MMM yyyy, HH:mm";
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
     profile: Profile;
-    priority:"LOW" | "MID" | "HIGH";
+    priority:$Enums.Priority;
   }
 }
 
