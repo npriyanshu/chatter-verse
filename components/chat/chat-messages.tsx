@@ -16,7 +16,8 @@ const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
-    profile: Profile
+    profile: Profile;
+    priority:"LOW" | "MID" | "HIGH";
   }
 }
 
@@ -30,6 +31,7 @@ interface ChatMessagesProps {
   paramKey: "channelId" | "conversationId";
   paramValue: string;
   type: "channel" | "conversation";
+  
 }
 
 export const ChatMessages = ({
