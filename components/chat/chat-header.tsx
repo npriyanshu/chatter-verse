@@ -12,7 +12,7 @@ interface ChatHeaderProps {
   name: string;
   type: "channel" | "conversation";
   imageUrl?: string;
-  channelId:string;
+  channelId?:string;
 }
 
 export const ChatHeader = ({

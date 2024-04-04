@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export const ChatHadderToggle = ({
     channelId
 }: {
-    channelId: string;
+    channelId?: string;
 }) => {
 
 
