@@ -66,6 +66,8 @@ model Member {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  messagePriorities UserMessagePriority[]
+
   @@index([profileId])
   @@index([serverId])
 }
@@ -117,11 +119,25 @@ model Message {
   deleted  Boolean  @default(false)
   priority Priority @default(LOW)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  UserMessagePriority UserMessagePriority[]
 
   @@index([channelId])
   @@index([memberId])
+}
+
+model UserMessagePriority {
+  id        String   @id @default(uuid())
+  priority  Priority
+  messageId String
+  memberId  String
+  message   Message  @relation(fields: [messageId], references: [id])
+  member    Member   @relation(fields: [memberId], references: [id])
+
+  @@unique([messageId, memberId])
+  @@index([messageId]) // Index added to messageId for faster queries
+  @@index([memberId]) // Index added to memberId for faster queries
 }
 
 model Conversation {

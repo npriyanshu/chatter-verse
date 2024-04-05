@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole, Profile,$Enums} from "@prisma/client";
+import { Member, MemberRole, Profile,Priority} from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -23,9 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
+import { PriorityModal } from "../modals/priority-modal";
 
 
-// type Priority = "LOW" | "MID" | "HIGH";
 
 interface ChatItemProps {
   id: string;
@@ -40,7 +40,7 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  priority:$Enums.Priority;
+  priority:Priority;
 };
 
 const roleIconMap = {
@@ -131,8 +131,8 @@ export const ChatItem = ({
 
   const fileType = fileUrl?.split(".").pop();
 
-  const isMid = priority === $Enums.Priority.MID;
-  const isHigh = priority === $Enums.Priority.HIGH;
+  const isMid = priority === Priority.MID;
+  const isHigh = priority === Priority.HIGH;
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
@@ -239,12 +239,8 @@ export const ChatItem = ({
       {canDeleteMessage && (
         <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
           {!isOwner && (
-            <ActionTooltip label="Edit">
-              <ChevronUp
-                onClick={() => setIsEditing(true)}
-                className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
-              />
-            </ActionTooltip>
+            <PriorityModal socketQuery={socketQuery} socketUrl={socketUrl} id={id} 
+            memberId={currentMember.id} />
           )}
           {canEditMessage && (
             <ActionTooltip label="Edit">
