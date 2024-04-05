@@ -6,7 +6,7 @@ import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Member, MemberRole, Profile,Priority} from "@prisma/client";
-import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp } from "lucide-react";
+import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp, Divide } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
@@ -238,10 +238,6 @@ export const ChatItem = ({
       </div>
       {canDeleteMessage && (
         <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
-          {!isOwner && (
-            <PriorityModal socketQuery={socketQuery} socketUrl={socketUrl} id={id} 
-            memberId={currentMember.id} />
-          )}
           {canEditMessage && (
             <ActionTooltip label="Edit">
               <Edit
@@ -260,7 +256,30 @@ export const ChatItem = ({
             />
           </ActionTooltip>
         </div>
-      )}
+      )
+    }
+     { !isOwner && (
+      <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
+            <PriorityModal socketQuery={socketQuery} socketUrl={socketUrl} id={id} 
+            memberId={currentMember.id} />
+         
+         {
+          canDeleteMessage && (
+            <ActionTooltip label="Delete">
+            <Trash
+              onClick={() => onOpen("deleteMessage", { 
+                apiUrl: `${socketUrl}/${id}`,
+                query: socketQuery,
+               })}
+              className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+            />
+          </ActionTooltip>
+          )
+         }
+
+      </div>
+    )
+    }
     </div>
   )
 }
