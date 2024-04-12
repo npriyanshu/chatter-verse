@@ -90,9 +90,10 @@ model Channel {
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   messages Message[]
+  UserMessagePriority UserMessagePriority[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
 
   @@index([profileId])
   @@index([serverId])
@@ -132,12 +133,16 @@ model UserMessagePriority {
   priority  Priority
   messageId String
   memberId  String
+  channelId String
   message   Message  @relation(fields: [messageId], references: [id])
   member    Member   @relation(fields: [memberId], references: [id])
+
+  channel Channel @relation(fields: [channelId], references: [id])
 
   @@unique([messageId, memberId])
   @@index([messageId]) // Index added to messageId for faster queries
   @@index([memberId]) // Index added to memberId for faster queries
+  @@index([channelId]) // Index added to memberId for faster queries
 }
 
 model Conversation {

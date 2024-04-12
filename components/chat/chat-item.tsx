@@ -5,10 +5,10 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole, Profile,Priority} from "@prisma/client";
+import { Member, MemberRole, Profile,Priority, UserMessagePriority} from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp, Divide } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { setMessagePriority } from "@/lib/setMessagePriority";
 import { UserAvatar } from "@/components/user-avatar";
@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { PriorityModal } from "../modals/priority-modal";
+import { getMessagePriority } from "@/lib/getMessagePriority";
+import { promises } from "dns";
 
 
 
@@ -40,7 +42,7 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
-  priority:Priority;
+  
 };
 
 const roleIconMap = {
@@ -73,6 +75,7 @@ export const ChatItem = ({
   // priority,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [priority, setPriority] = useState<Priority>(Priority.LOW);
   const { onOpen } = useModal();
   const params = useParams();
   const router = useRouter();
@@ -143,11 +146,41 @@ export const ChatItem = ({
 
   // update priority function 
   const updatePriority = async (priorityName:Priority) =>{
-    const p = await setMessagePriority( { 
+    
+    const p :Priority = await setMessagePriority( { 
       apiUrl: `${socketUrl}/${id}`,
       query: socketQuery,
      },id,currentMember.id,priorityName);
+     setPriority(p);
   }
+
+  type resType = {
+    createdAt: string;
+    id: string;
+    messagePriorities: UserMessagePriority[]; // This array should be replaced with the correct type if possible
+    profileId: string;
+    role: "ADMIN" | "MODERATOR" | "GUEST"; // Assuming role can only be one of these values
+    serverId: string;
+    updatedAt: string;
+  };
+  
+  const priorityGetter = async()=>{
+    const res:resType = await getMessagePriority({ 
+      apiUrl: `${socketUrl}/${id}`,
+      query: socketQuery,
+     },id,currentMember.id,);
+
+     const temp:Priority = res?.messagePriorities?.length > 0 ? res.messagePriorities[0].priority : "LOW";
+     setPriority(temp);
+  }
+  // to get msg priority
+  useMemo(() => {
+
+priorityGetter();
+console.log('tick tick')
+//  eslint-disable-next-line react-hooks/exhaustive-deps 
+  },[priority]);
+  
 
 
   return (
@@ -200,8 +233,11 @@ export const ChatItem = ({
           )}
           {!fileUrl && !isEditing && (
             <p className={cn(
-              "text-sm text-zinc-600 dark:text-zinc-300",
-              deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
+              deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1",
+              priority === "LOW" && "text-sm text-zinc-600 dark:text-zinc-300",
+              priority === "MID" && "text-blue-600",
+              priority === "HIGH" && "text-red-600",
+
             )}>
               {content}
               {isUpdated && !deleted && (

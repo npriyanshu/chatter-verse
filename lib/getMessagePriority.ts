@@ -7,7 +7,7 @@ interface Url{
     query: Record<string, string>,
 }
 
-export const setMessagePriority = async (Url:Url,messageId: string,memberId:string,priority:Priority) => {
+export const getMessagePriority = async (Url:Url,messageId: string,memberId:string,) => {
   const { apiUrl, query } = Url;
   try {
     const url = qs.stringifyUrl({
@@ -15,9 +15,10 @@ export const setMessagePriority = async (Url:Url,messageId: string,memberId:stri
       query,
     });
 
-    const response = await axios.put(url, { messageId,memberId, priority });
-    return response.data.priority;
+    const response = await axios.post(url, { messageId,memberId });
+    return response.data?.userMessagePriority;
   } catch (error) {
-    console.error("Error setting priority:", error);
+    console.error("Error getting priority:", error);
   }
+
 };
