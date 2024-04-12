@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { setMessagePriority } from "@/lib/setMessagePriority";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,16 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronsUp } from "lucide-react";
+import { Priority } from "@prisma/client";
 
 
 interface PriorityModalProps {
-    socketUrl:string;
-    socketQuery:Record<string,string>;
-    id:string;
-    memberId:string;
+    updatePriority:(priorityName:Priority)=>Promise<Priority | void>
 }
 
-export function PriorityModal({socketUrl,socketQuery,id,memberId}:PriorityModalProps) {
+export function PriorityModal({updatePriority}:PriorityModalProps) {
+
 
   return (
     <DropdownMenu>
@@ -31,23 +29,14 @@ export function PriorityModal({socketUrl,socketQuery,id,memberId}:PriorityModalP
               />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className=" relative lg:left-[80vw] top-[60vh] left-[60vw]">
-        <DropdownMenuItem onClick={() => setMessagePriority( { 
-                  apiUrl: `${socketUrl}/${id}`,
-                  query: socketQuery,
-                 },id,memberId,"LOW")}>
+      <DropdownMenuContent className=" relative lg:left-[80vw] top-[50vh] left-[60vw]">
+        <DropdownMenuItem onClick={() => updatePriority("LOW")}>
           LOW
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setMessagePriority( { 
-                  apiUrl: `${socketUrl}/${id}`,
-                  query: socketQuery,
-                 },id,memberId,"MID")}>
+        <DropdownMenuItem onClick={() => updatePriority("MID")}>
           MID
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setMessagePriority( { 
-                  apiUrl: `${socketUrl}/${id}`,
-                  query: socketQuery,
-                 },id,memberId,"HIGH")}>
+        <DropdownMenuItem onClick={() => updatePriority("HIGH")}>
           HIGH
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -43,7 +43,11 @@ export const ChatHeader = ({
         {type === "conversation" && (
           <ChatVideoButton />
           )}
-        <ChatHadderToggle channelId= {channelId}/>
+        {
+          type !=="conversation" &&(
+            <ChatHadderToggle channelId= {channelId}/>
+          )
+        }
         <SocketIndicator />
       </div>
     </div>

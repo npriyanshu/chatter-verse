@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react"
+import {ChevronsDown} from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -17,7 +17,7 @@ export const ChatHadderToggle = ({
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size={"icon"}>
-          <ArrowDown />
+          <ChevronsDown />
         </Button>
       </SheetTrigger>
       <SheetContent side="top" className="p-0 flex gap-0">

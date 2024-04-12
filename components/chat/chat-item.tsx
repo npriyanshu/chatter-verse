@@ -10,7 +10,7 @@ import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp, Divide } fro
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-
+import { setMessagePriority } from "@/lib/setMessagePriority";
 import { UserAvatar } from "@/components/user-avatar";
 import { ActionTooltip } from "@/components/action-tooltip";
 import { cn } from "@/lib/utils";
@@ -49,11 +49,11 @@ const roleIconMap = {
   "ADMIN": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
 }
 
-const priorityIconMap = {
-  "LOW": null,
-  "MID": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
-  "HIGH": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
-}
+// const priorityIconMap = {
+//   "LOW": null,
+//   "MID": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
+//   "HIGH": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
+// }
 
 const formSchema = z.object({
   content: z.string().min(1),
@@ -70,7 +70,7 @@ export const ChatItem = ({
   isUpdated,
   socketUrl,
   socketQuery,
-  priority,
+  // priority,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
@@ -131,8 +131,8 @@ export const ChatItem = ({
 
   const fileType = fileUrl?.split(".").pop();
 
-  const isMid = priority === Priority.MID;
-  const isHigh = priority === Priority.HIGH;
+  // const isMid = priority === Priority.MID;
+  // const isHigh = priority === Priority.HIGH;
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
@@ -140,6 +140,15 @@ export const ChatItem = ({
   const canEditMessage = !deleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
+
+  // update priority function 
+  const updatePriority = async (priorityName:Priority) =>{
+    const p = await setMessagePriority( { 
+      apiUrl: `${socketUrl}/${id}`,
+      query: socketQuery,
+     },id,currentMember.id,priorityName);
+  }
+
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
@@ -260,8 +269,7 @@ export const ChatItem = ({
     }
      { !isOwner && (
       <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
-            <PriorityModal socketQuery={socketQuery} socketUrl={socketUrl} id={id} 
-            memberId={currentMember.id} />
+            <PriorityModal updatePriority={updatePriority}/>
          
          {
           canDeleteMessage && (
