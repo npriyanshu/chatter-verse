@@ -29,7 +29,7 @@ export function PriorityModal({updatePriority}:PriorityModalProps) {
               />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className=" relative lg:left-[80vw] top-[50vh] left-[60vw]">
+      <DropdownMenuContent className=" relative lg:left-[80vw] top-[40vh] left-[40vw]">
         <DropdownMenuItem onClick={() => updatePriority("LOW")}>
           LOW
         </DropdownMenuItem>

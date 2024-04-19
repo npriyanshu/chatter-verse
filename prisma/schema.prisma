@@ -89,11 +89,11 @@ model Channel {
   serverId String
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
-  messages Message[]
+  messages            Message[]
   UserMessagePriority UserMessagePriority[]
 
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([profileId])
   @@index([serverId])
@@ -105,9 +105,16 @@ enum Priority {
   HIGH
 }
 
+enum MessageTypes {
+  NORMAL
+  CUSTOM
+}
+
 model Message {
-  id      String @id @default(uuid())
+  id      String  @id @default(uuid())
   content String @db.Text
+  title   String?
+  icon    String?
 
   fileUrl String? @db.Text
 
@@ -119,6 +126,8 @@ model Message {
 
   deleted  Boolean  @default(false)
   priority Priority @default(LOW)
+
+  messageType MessageTypes @default(NORMAL)
 
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
