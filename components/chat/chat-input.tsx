@@ -23,7 +23,7 @@ interface ChatInputProps {
   apiUrl: string;
   query: Record<string, any>;
   name: string;
-  role:MemberRole;
+  role?:MemberRole;
   type: "conversation" | "channel";
 }
 
