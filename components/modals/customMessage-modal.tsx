@@ -48,30 +48,7 @@ export const CustomMessageModal = () => {
 
 
   return (
-    // <Dialog open={isModalOpen} onOpenChange={onClose}>
-    //   <DialogContent className="bg-white text-black overflow-hidden min-w-[70vw] min-h-[95vh]">
-    //     <DialogHeader className="pt-8 px-6">
-    //       <DialogTitle className="text-2xl text-center font-bold">
-    //         Send Custom Message
-    //       </DialogTitle>
-    //       <DialogDescription 
-    //         className="text-center text-zinc-500"
-    //       >
-    //         write your custom messages
-    //       </DialogDescription>
-    //     </DialogHeader>
-        
-    //     <ScrollArea className=" max-h-[420px]">
-    //     <Toolbar setTitle={setTitle} title={title}  />
-    //     <Editor
-    //       // onChange={()=>{}}
-    //       initialContent={content}
-    //       setContent={setContent}
-    //     />
-          
-    //     </ScrollArea>
-    //   </DialogContent>
-    // </Dialog>
+ 
 
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="bg-white text-black p-0 overflow-x-hidden overflow-y-auto max-w-[70vw] min-h-[80vh] max-h-[90vh]">
@@ -79,14 +56,11 @@ export const CustomMessageModal = () => {
           <DialogTitle className="text-2xl text-center font-bold">
           Send Custom Message
           </DialogTitle>
-          {/* <DialogDescription className="text-center text-zinc-500">
-          write your custom messages
-          </DialogDescription> */}
         </DialogHeader>
         
         <ScrollArea className=" h-[300px] max-h-[420px] overflow-x-hidden overflow-y-auto">
-         {/* <Toolbar setTitle={setTitle} title={title}  />
-         <Editor
+         <Toolbar setTitle={setTitle} title={title} preview={false} />
+         {/* <Editor
           // onChange={()=>{}}
           initialContent={content}
           setContent={setContent}
@@ -104,17 +78,3 @@ export const CustomMessageModal = () => {
 }
 
 
-// initialData={{
-//   id: "string",
-//   content: "string",
-//   title: "Untitled",
-//   icon:  null,
-//   fileUrl: null,
-//   memberId: "string",
-//   channelId: "string",
-//   deleted: false,
-//   priority: "LOW",
-//   messageType: "CUSTOM",
-//   createdAt: new Date(),
-//   updatedAt: new Date(),
-// }}

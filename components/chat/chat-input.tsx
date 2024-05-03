@@ -17,11 +17,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { EmojiPickerComponent } from "../emoji-picker component";
+import { MemberRole } from "@prisma/client";
 
 interface ChatInputProps {
   apiUrl: string;
   query: Record<string, any>;
   name: string;
+  role:MemberRole;
   type: "conversation" | "channel";
 }
 
@@ -33,6 +35,7 @@ export const ChatInput = ({
   apiUrl,
   query,
   name,
+  role,
   type,
 }: ChatInputProps) => {
   const { onOpen } = useModal();
@@ -84,13 +87,18 @@ export const ChatInput = ({
                     <Plus className="text-white dark:text-[#313338]" />
                   </button>
 
-                  <button
+                  { type === "channel" && role !== "GUEST" &&
+                  (
+                    <button
                     type="button"
                     onClick={() => onOpen("customMessage", { apiUrl, query })}
                     className="h-[22px] w-[22px] bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
                   >
                     <MessageSquarePlus className="text-white dark:text-[#313338]" />
                   </button>
+                  ) 
+
+                  }
 
                   </div>
 
