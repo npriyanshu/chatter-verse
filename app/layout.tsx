@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 
+import { EdgeStoreProvider } from '@/lib/edgestore';
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { ModalProvider } from '@/components/providers/modal-provider'
@@ -23,6 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
+    <EdgeStoreProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={cn(
           font.className,
@@ -43,6 +45,8 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
+
+      </EdgeStoreProvider>
     </ClerkProvider>
   )
 }

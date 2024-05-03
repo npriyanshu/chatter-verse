@@ -20,10 +20,10 @@ export const ChatHadderToggle = ({
           <ChevronsDown />
         </Button>
       </SheetTrigger>
-      <SheetContent side="top" className="p-0 flex gap-0">
+      <SheetContent side="top" className="p-0 flex gap-0 bg-white dark:bg-[#1b1b1d]">
         <div className="h-[70vh]">
         
-        {/* important Messages bar  */}
+        {/* important Messages   */}
         </div>
         
       </SheetContent>

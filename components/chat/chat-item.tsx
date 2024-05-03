@@ -6,7 +6,7 @@ import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Member, MemberRole, Profile,Priority, UserMessagePriority} from "@prisma/client";
-import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash,ChevronUp, Divide } from "lucide-react";
+import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
@@ -304,7 +304,7 @@ console.log('tick tick')
       )
     }
      { !isOwner && (
-      <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
+      <div className=" hidden group-hover:flex items-center w-9 h-9 gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm  ">
             <PriorityModal updatePriority={updatePriority}/>
          
          {
