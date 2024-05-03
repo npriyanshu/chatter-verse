@@ -60,11 +60,11 @@ export const CustomMessageModal = () => {
         
         <ScrollArea className=" h-[300px] max-h-[420px] overflow-x-hidden overflow-y-auto">
          <Toolbar setTitle={setTitle} title={title} preview={false} />
-         {/* <Editor
-          // onChange={()=>{}}
+         <Editor
+          onChange={()=>{}}
           initialContent={content}
           setContent={setContent}
-        /> */}
+        />
         </ScrollArea>
         
             <DialogFooter className="bg-gray-100 px-6 py-4">

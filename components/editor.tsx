@@ -15,14 +15,14 @@ import "@blocknote/core/style.css";
 import { useEdgeStore } from "../lib/edgestore";
 
 interface EditorProps {
-  // onChange: (value: string) => void;
+  onChange: (value: string) => void;
   initialContent?: string;
   setContent: (val : string) =>void;
   editable?: boolean;
 };
 
 const Editor = ({
-  // onChange,
+  onChange,
   initialContent,
   editable
 }: EditorProps) => {
@@ -44,7 +44,7 @@ const Editor = ({
       ? JSON.parse(initialContent) as PartialBlock[] 
       : undefined,
     onEditorContentChange: (editor) => {
-      // onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
+      onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
     },
     uploadFile: handleUpload
   })
