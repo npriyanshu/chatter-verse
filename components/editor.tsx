@@ -10,6 +10,7 @@ import {
   BlockNoteView,
   useBlockNote
 } from "@blocknote/react";
+
 import "@blocknote/core/style.css";
 
 import { useEdgeStore } from "../lib/edgestore";
