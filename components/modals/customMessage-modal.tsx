@@ -19,7 +19,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -86,12 +85,12 @@ export const CustomMessageModal = () => {
         </DialogHeader>
         
         <ScrollArea className=" h-[300px] max-h-[420px] overflow-x-hidden overflow-y-auto">
-         <Toolbar setTitle={setTitle} title={title}  />
+         {/* <Toolbar setTitle={setTitle} title={title}  />
          <Editor
           // onChange={()=>{}}
           initialContent={content}
           setContent={setContent}
-        />
+        /> */}
         </ScrollArea>
         
             <DialogFooter className="bg-gray-100 px-6 py-4">
