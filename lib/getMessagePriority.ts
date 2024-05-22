@@ -1,4 +1,3 @@
-import { Priority } from "@prisma/client";
 import axios from "axios";
 import qs from "query-string";
 

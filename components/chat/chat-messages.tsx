@@ -14,7 +14,7 @@ import { ChatItem } from "./chat-item";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
-type MessageWithMemberWithProfile = Message & {
+export type MessageWithMemberWithProfile = Message & {
   member: Member & {
     profile: Profile;
     priority:Priority;
@@ -126,6 +126,7 @@ export const ChatMessages = ({
                 key={message.id}
                 id={message.id}
                 currentMember={member}
+                messageType={message.messageType}
                 member={message.member}
                 content={message.content}
                 fileUrl={message.fileUrl}
@@ -134,7 +135,7 @@ export const ChatMessages = ({
                 isUpdated={message.updatedAt !== message.createdAt}
                 socketUrl={socketUrl}
                 socketQuery={socketQuery}
-                // priority={message.priority}
+                type={type}
               />
             ))}
           </Fragment>

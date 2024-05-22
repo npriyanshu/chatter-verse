@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "next-themes";
-// import {
-//   BlockNoteEditor,
-//   // PartialBlock
-// } from "@blocknote/core";
+import {
+  BlockNoteEditor,
+  PartialBlock
+} from "@blocknote/core";
 import {
   BlockNoteView,
   useBlockNote,
@@ -23,7 +23,7 @@ interface EditorProps {
   editable?: boolean;
 };
 
-const Editor = ({
+const EditorShow = ({
   onChange,
   initialContent,
   editable
@@ -39,22 +39,22 @@ const Editor = ({
     return response.url;
   }
 
-  const editor = useBlockNote({
+
+  const editor : BlockNoteEditor
+   = useBlockNote({
     editable,
     initialContent: 
       initialContent 
-      ? JSON.parse(initialContent)
+      ? JSON.parse(initialContent) as PartialBlock[] 
       : undefined,
     onEditorContentChange: (editor) => {
-      // console.log(" editor :",editor);
       onChange(JSON.stringify(editor.topLevelBlocks,null,2));
-      // console.log(editor.topLevelBlocks ? JSON.stringify(editor.topLevelBlocks) : false);
     },
     uploadFile: handleUpload
   })
+
   return (
     <div>
-
       <BlockNoteView
         editor={editor}
         theme={resolvedTheme === "dark" ? "dark" : "light"}
@@ -64,4 +64,4 @@ const Editor = ({
   )
 }
 
-export default Editor;
+export default EditorShow;

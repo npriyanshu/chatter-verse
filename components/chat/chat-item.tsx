@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole, Profile,Priority, UserMessagePriority} from "@prisma/client";
+import { Member, MemberRole, Profile,Priority, UserMessagePriority, MessageTypes, ChannelType} from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
@@ -25,12 +25,14 @@ import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { PriorityModal } from "../modals/priority-modal";
 import { getMessagePriority } from "@/lib/getMessagePriority";
-import { promises } from "dns";
+// import { Toolbar } from "../toolbar";
+import EditorShow from "../editorShow";
 
 
 
 interface ChatItemProps {
   id: string;
+  title?: string;
   content: string;
   member: Member & {
     profile: Profile;
@@ -42,6 +44,9 @@ interface ChatItemProps {
   isUpdated: boolean;
   socketUrl: string;
   socketQuery: Record<string, string>;
+  messageType:MessageTypes;
+  type: "conversation" | "channel";
+
   
 };
 
@@ -59,10 +64,12 @@ const roleIconMap = {
 
 const formSchema = z.object({
   content: z.string().min(1),
+  // title : z.string().min(1),
 });
 
 export const ChatItem = ({
   id,
+  // title,
   content,
   member,
   timestamp,
@@ -72,13 +79,18 @@ export const ChatItem = ({
   isUpdated,
   socketUrl,
   socketQuery,
-  // priority,
+  messageType,
+  type,
+
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [cont, setCont] = useState<string>(content);
+  // const [tit,setTit] = useState<string>(title ? title : "Untitled");
   const [priority, setPriority] = useState<Priority>(Priority.LOW);
   const { onOpen } = useModal();
   const params = useParams();
   const router = useRouter();
+  // const pathname = usePathname();
 
   const onMemberClick = () => {
     if (member.id === currentMember.id) {
@@ -87,6 +99,15 @@ export const ChatItem = ({
   
     router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
   }
+
+
+
+  useEffect(()=>{
+    // console.log("pathname :", pathname);
+    setCont(content);
+    // setTit(title ? title : "Untitled");
+  },[content])
+
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -103,7 +124,8 @@ export const ChatItem = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      content: content
+      content: content,
+      // title : title,
     }
   });
 
@@ -123,6 +145,7 @@ export const ChatItem = ({
     } catch (error) {
       console.log(error);
     }
+ 
   }
 
   useEffect(() => {
@@ -175,9 +198,7 @@ export const ChatItem = ({
   }
   // to get msg priority
   useMemo(() => {
-
 priorityGetter();
-console.log('tick tick')
 //  eslint-disable-next-line react-hooks/exhaustive-deps 
   },[priority]);
   
@@ -231,13 +252,41 @@ console.log('tick tick')
               </a>
             </div>
           )}
-          {!fileUrl && !isEditing && (
+
+          {/* editor component  */}
+          {!deleted && !fileUrl && !isEditing && messageType === "CUSTOM" &&(
+            <div className=" mt-4">
+            {/* <Toolbar titleM={title} setTitleM={()=>{}} preview ={true}/> */}
+
+           <EditorShow onChange={()=>{}} initialContent={content} editable={false}/>
+            </div>
+          )}
+
+          {/* editor component  */}
+          {!deleted && !fileUrl && isEditing && messageType === "CUSTOM" &&(
+         <div className=" flex flex-col gap-3">
+             <div className=" mt-4">
+            {/* <Toolbar titleM={title} setTitleM={setTit} preview ={false}/> */}
+
+           <EditorShow onChange={setCont} initialContent={content} editable={true}/>
+            </div>
+            <Button onClick={()=>onSubmit({content:cont})} disabled={isLoading} size="sm" variant="primary">
+                    Save
+            </Button>
+         </div>
+          )}
+
+          {/* editor component  */}
+          {deleted && messageType === "CUSTOM" &&(
+         <p className=" italic text-sm text-zinc-600 dark:text-zinc-300 mt-1">{content}</p>
+          )}
+
+          {!fileUrl && !isEditing && messageType === "NORMAL" && type === "channel" && (
             <p className={cn(
               deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1",
               priority === "LOW" && "text-sm text-zinc-600 dark:text-zinc-300",
               priority === "MID" && "text-blue-600",
               priority === "HIGH" && "text-red-600",
-
             )}>
               {content}
               {isUpdated && !deleted && (
@@ -247,7 +296,7 @@ console.log('tick tick')
               )}
             </p>
           )}
-          {!fileUrl && isEditing && (
+          {!fileUrl && isEditing && messageType !== "CUSTOM" && type === "channel" &&(
             <Form {...form}>
               <form 
                 className="flex items-center w-full gap-x-2 pt-2"
@@ -279,6 +328,57 @@ console.log('tick tick')
               </span>
             </Form>
           )}
+
+ {/* for direct messages */}
+
+{!fileUrl && !isEditing && !messageType && type !== "channel" &&(
+            <p className={cn(
+              deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1",
+              priority === "LOW" && "text-sm text-zinc-600 dark:text-zinc-300",
+              priority === "MID" && "text-blue-600",
+              priority === "HIGH" && "text-red-600",
+            )}>
+              {content}
+              {isUpdated && !deleted && (
+                <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
+                  (edited)
+                </span>
+              )}
+            </p>
+          )}
+          {!fileUrl && isEditing && messageType !== "CUSTOM" && type !== "channel" &&(
+            <Form {...form}>
+              <form 
+                className="flex items-center w-full gap-x-2 pt-2"
+                onSubmit={form.handleSubmit(onSubmit)}>
+                  <FormField
+                    control={form.control}
+                    name="content"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <div className="relative w-full">
+                            <Input
+                              disabled={isLoading}
+                              className="p-2 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                              placeholder="Edited message"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <Button disabled={isLoading} size="sm" variant="primary">
+                    Save
+                  </Button>
+              </form>
+              <span className="text-[10px] mt-1 text-zinc-400">
+                Press escape to cancel, enter to save
+              </span>
+            </Form>
+          )}
+
         </div>
       </div>
       {canDeleteMessage && (

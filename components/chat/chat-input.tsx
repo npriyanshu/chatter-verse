@@ -97,7 +97,6 @@ export const ChatInput = ({
                     <MessageSquarePlus className="text-white dark:text-[#313338]" />
                   </button>
                   ) 
-
                   }
 
                   </div>

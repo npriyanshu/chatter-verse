@@ -6,11 +6,14 @@ import { SocketIndicator } from "@/components/socket-indicator";
 
 import { ChatVideoButton } from "./chat-video-button";
 import { ChatHadderToggle } from "../ChatHadderToggle";
+import { Member } from "@prisma/client";
 
 interface ChatHeaderProps {
   serverId: string;
   name: string;
+  member:Member;
   type: "channel" | "conversation";
+  socketQuery: Record<string, string>;
   imageUrl?: string;
   channelId?:string;
 }
@@ -18,6 +21,8 @@ interface ChatHeaderProps {
 export const ChatHeader = ({
   serverId,
   name,
+  member,
+  socketQuery,
   type,
   imageUrl,
   channelId,
@@ -45,7 +50,7 @@ export const ChatHeader = ({
           )}
         {
           type !=="conversation" &&(
-            <ChatHadderToggle channelId= {channelId}/>
+            <ChatHadderToggle socketQuery={socketQuery} member= {member} channelId= {channelId}/>
           )
         }
         <SocketIndicator />
