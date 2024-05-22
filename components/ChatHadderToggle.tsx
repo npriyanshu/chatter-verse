@@ -28,15 +28,13 @@ export const ChatHadderToggle = ({
   const [msgs,setMsgs] = useState<MessageWithMemberWithProfile[] | null>(null);
 
   const fetchMessages= async()=>{
-    let data = await priorityMessagesFetch(member.id,channelId as string);
-    console.log("data :",data[0]);
+    let data : MessageWithMemberWithProfile[] = await priorityMessagesFetch(member.id,channelId as string);
     setMsgs(data);
   }
   useEffect( ()=>{
     fetchMessages();
   },[channelId])
-
-
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -48,13 +46,34 @@ export const ChatHadderToggle = ({
         <div className="h-[70vh]">
         
         {/* important Messages   */}
+        <div className="flex flex-col-reverse mt-auto">
         {
 msgs && msgs.map( 
-(msg)=> <div key={msg.id}>
-  <p>{msg.content}</p>
-</div>
+(message)=>  <ChatItem 
+key={message.id}
+id={message.id}
+currentMember={member}
+messageType={message.messageType}
+member={message.member}
+content={message.content}
+fileUrl={message.fileUrl}
+deleted={message.deleted}
+timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+isUpdated={message.updatedAt !== message.createdAt}
+socketUrl={"/api/socket/messages"}
+socketQuery={socketQuery}
+type={"channel"}
+/>
 )
 }
+
+{
+!msgs && (
+  <p>Loading ... </p>
+)
+}
+
+        </div>
 </div> 
       </SheetContent>
     </Sheet>

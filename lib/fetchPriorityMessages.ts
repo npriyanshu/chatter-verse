@@ -1,6 +1,7 @@
 // components/PriorityMessagesComponent.js
 
 
+
 export default async function priorityMessagesFetch( userId: string, channelId: string) {
   try {
     const response = await fetch(`/api/socket/messages?${userId}&channelId=${channelId}`);
@@ -10,7 +11,7 @@ export default async function priorityMessagesFetch( userId: string, channelId: 
     // }
 
     const data = await response.json();
-    console.log(data);
+  
     return data; // Assuming you want to return the fetched data
   } catch (error) {
     console.error('Error fetching priority messages:', error);

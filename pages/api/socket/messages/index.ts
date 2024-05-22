@@ -22,16 +22,23 @@ export default async function handler(
           where: {
             memberId: userId as string,
             channelId: channelId as string,
+            priority:{
+              not : "LOW"
+            }
           },
           include: {
-            message: true,
-            member: {
-                include: {
-                  profile: true,
-                }
-              }
+            message: {
+              include: {
+                member: {
+                  include: {
+                    profile: true,
+                  },
+                },
+              },
+            },
           },
         });
+    
     
         const priorityMessages = messages.map(({ message }) => message);
         return res.status(200).json(priorityMessages);
