@@ -6,14 +6,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import priorityMessagesFetch from "@/lib/fetchPriorityMessages";
-import { Member } from "@prisma/client";
-import { format } from "date-fns";
-import { MessageWithMemberWithProfile } from "./chat/chat-messages";
-import { ChatItem } from "./chat/chat-item";
 
-const DATE_FORMAT = "d MMM yyyy, HH:mm";
+import { Member } from "@prisma/client";
+
+import ImpMessages from "./ui/ImpMessages";
 
 export const ChatHadderToggle = ({
   socketQuery,
@@ -25,16 +21,7 @@ export const ChatHadderToggle = ({
     channelId?: string;
 }) => {
 
-  const [msgs,setMsgs] = useState<MessageWithMemberWithProfile[] | null>(null);
-
-  const fetchMessages= async()=>{
-    let data : MessageWithMemberWithProfile[] = await priorityMessagesFetch(member.id,channelId as string);
-    setMsgs(data);
-  }
-  useEffect( ()=>{
-    fetchMessages();
-  },[channelId])
-  
+ 
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -43,37 +30,11 @@ export const ChatHadderToggle = ({
         </Button>
       </SheetTrigger>
       <SheetContent side="top" className="p-0 flex gap-0 bg-white dark:bg-[#1b1b1d]">
-        <div className="h-[70vh]">
+        <div className="h-[70vh] w-[100vw] pl-[10vw] lg:pl-[8vw]">
         
         {/* important Messages   */}
-        <div className="flex flex-col-reverse mt-auto">
-        {
-msgs && msgs.map( 
-(message)=>  <ChatItem 
-key={message.id}
-id={message.id}
-currentMember={member}
-messageType={message.messageType}
-member={message.member}
-content={message.content}
-fileUrl={message.fileUrl}
-deleted={message.deleted}
-timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
-isUpdated={message.updatedAt !== message.createdAt}
-socketUrl={"/api/socket/messages"}
-socketQuery={socketQuery}
-type={"channel"}
-/>
-)
-}
-
-{
-!msgs && (
-  <p>Loading ... </p>
-)
-}
-
-        </div>
+        <ImpMessages  socketQuery={socketQuery}  member={member} channelId={channelId}  />
+       
 </div> 
       </SheetContent>
     </Sheet>
