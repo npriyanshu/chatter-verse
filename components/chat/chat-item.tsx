@@ -27,6 +27,7 @@ import { PriorityModal } from "../modals/priority-modal";
 import { getMessagePriority } from "@/lib/getMessagePriority";
 // import { Toolbar } from "../toolbar";
 import EditorShow from "../editorShow";
+import TipTapEditor from "../tiptapEditor";
 
 
 
@@ -84,7 +85,7 @@ export const ChatItem = ({
 
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [cont, setCont] = useState<string>(content);
+  const [cont, setCont] = useState<any>(content);
   // const [tit,setTit] = useState<string>(title ? title : "Untitled");
   const [priority, setPriority] = useState<Priority>(Priority.LOW);
   const { onOpen } = useModal();
@@ -100,6 +101,10 @@ export const ChatItem = ({
     router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
   }
 
+
+  const updateContentData = (data: any) => {
+    setCont(data);
+  };
 
 
   useEffect(()=>{
@@ -124,7 +129,8 @@ export const ChatItem = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      content: content,
+      // content: content,
+      content: cont,
       // title : title,
     }
   });
@@ -150,10 +156,10 @@ export const ChatItem = ({
 
   useEffect(() => {
     form.reset({
-      content: content,
+      content: cont,
     })
   //  eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, [content]);
+  }, [content,cont]);
 
   const fileType = fileUrl?.split(".").pop();
 
@@ -258,7 +264,8 @@ priorityGetter();
             <div className=" mt-4">
             {/* <Toolbar titleM={title} setTitleM={()=>{}} preview ={true}/> */}
 
-           <EditorShow onChange={()=>{}} initialContent={content} editable={false}/>
+           {/* <EditorShow onChange={()=>{}} initialContent={content} editable={false}/> */}
+           <TipTapEditor onChange={()=>{}} initialContent={cont} editable={false}/>
             </div>
           )}
 
@@ -268,7 +275,9 @@ priorityGetter();
              <div className=" mt-4">
             {/* <Toolbar titleM={title} setTitleM={setTit} preview ={false}/> */}
 
-           <EditorShow onChange={setCont} initialContent={content} editable={true}/>
+           {/* <EditorShow onChange={setCont} initialContent={content} editable={true}/> */}
+           <TipTapEditor onChange={(reason : any)=>{ updateContentData(reason)}} initialContent={cont} editable={true}/>
+
             </div>
             <Button onClick={()=>onSubmit({content:cont})} disabled={isLoading} size="sm" variant="primary">
                     Save
@@ -288,7 +297,7 @@ priorityGetter();
               priority === "MID" && "text-blue-600",
               priority === "HIGH" && "text-red-600",
             )}>
-              {content}
+              {cont}
               {isUpdated && !deleted && (
                 <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                   (edited)
@@ -338,7 +347,7 @@ priorityGetter();
               priority === "MID" && "text-blue-600",
               priority === "HIGH" && "text-red-600",
             )}>
-              {content}
+              {cont}
               {isUpdated && !deleted && (
                 <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                   (edited)

@@ -3,16 +3,19 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 
 interface TipTapEditorProps {
-    onChange: (value: string) => void;
+    onChange: (value: any) => void;
     initialContent?: string;
     editable?: boolean;
   };
 
-const TipTapEditor = ({ initialContent, editable }:TipTapEditorProps) => {
+const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: initialContent,
     editable: editable,
+    onUpdate({editor}) {
+        onChange(editor.getHTML());
+    },
   });
 
   useEffect(() => {

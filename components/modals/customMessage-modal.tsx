@@ -11,13 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import { useModal } from "@/hooks/use-modal-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Toolbar } from "../toolbar";
 import axios from "axios";
 import qs from "query-string";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import Editor from "../editor";
-import { z } from "zod";
+// import Editor from "../editor";
 import { useRouter } from "next/navigation";
 import { MessageTypes } from "@prisma/client";
 import TipTapEditor from "../tiptapEditor";
