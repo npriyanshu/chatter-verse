@@ -33,14 +33,14 @@ export const CustomMessageModal = () => {
   const router = useRouter();
   const { isOpen, onClose, type, data } = useModal();
   const [titleM, setTitleM] = useState<string>("Untitled");
-  const [contentM, setContentM] = useState<string>(`[]`);
+  const [contentM, setContentM] = useState<string>(``); // it was [] for blocknote
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [values, setValues] = useState<ValueTypes>({ content: "", title: "", messageType: "CUSTOM" });
   const { apiUrl, query } = data;
 
 
 
-  const onChange = (cont: string) => {
+  const onChange = (cont: any) => {
     setContentM(cont);
   };
 
@@ -86,7 +86,6 @@ export const CustomMessageModal = () => {
         </DialogHeader>
 
         <ScrollArea className=" h-[300px] max-h-[420px] overflow-x-hidden overflow-y-auto">
-          {/* <Toolbar setTitleM={setTitleM} titleM={titleM} preview={false} /> */}
           {/* <Editor
             onChange={onChange}
             initialContent={contentM}
