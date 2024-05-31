@@ -20,6 +20,7 @@ import Editor from "../editor";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { MessageTypes } from "@prisma/client";
+import TipTapEditor from "../tiptapEditor";
 
 
 type ValueTypes = {
@@ -86,7 +87,11 @@ export const CustomMessageModal = () => {
 
         <ScrollArea className=" h-[300px] max-h-[420px] overflow-x-hidden overflow-y-auto">
           {/* <Toolbar setTitleM={setTitleM} titleM={titleM} preview={false} /> */}
-          <Editor
+          {/* <Editor
+            onChange={onChange}
+            initialContent={contentM}
+          /> */}
+          <TipTapEditor
             onChange={onChange}
             initialContent={contentM}
           />
