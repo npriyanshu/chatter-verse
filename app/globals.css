@@ -9,7 +9,27 @@ body,
 :root {
   height: 100%;
 }
- 
+/* Example CSS */
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+
+/* Example CSS */
+ul, ol {
+  margin: 0;
+  padding: 0;
+  padding-left: 20px; /* Indent list items */
+}
+
+ul li {
+  list-style-type: disc; /* Bullet points for unordered lists */
+}
+
+ol li {
+  list-style-type: decimal; /* Numbers for ordered lists */
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;

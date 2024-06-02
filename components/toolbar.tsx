@@ -1,145 +1,193 @@
-"use client";
+import { type Editor } from "@tiptap/react";
 
-import { ElementRef, useRef, useState } from "react";
-import { ImageIcon, Smile, X } from "lucide-react";
-// import { useMutation } from "convex/react";
-import TextareaAutosize from "react-textarea-autosize";
-
-// import { useCoverImage } from "@/hooks/use-cover-image";
-// import { Doc } from "@/convex/_generated/dataModel";
-import { Button } from "@/components/ui/button";
-// import { api } from "@/convex/_generated/api";
-
-import { IconPicker } from "./icon-picker";
-import { Message } from "@prisma/client";
+import {
+Bold,
+Strikethrough,
+Italic,
+List,
+ListOrdered,
+Heading2,
+Underline,
+Quote,
+Undo,
+Redo,
+Code,
+} from "lucide-react";
 
 interface ToolbarProps {
-  title: string;
-  setTitle :(value : string)=>void;
-  preview?: boolean;
+  editor:Editor | null;
+  content?:string,
 };
 
 export const Toolbar = ({
-  title,
-  setTitle,
-  preview
+  editor,
+  content
 }: ToolbarProps) => {
-  const inputRef = useRef<ElementRef<"textarea">>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  // const [icon, setIcon] = useState(initialData.icon);
-  const [asChild, setAsChild] = useState<boolean>(false);
 
-  // const update = useMutation(api.documents.update);
-  // const removeIcon = useMutation(api.documents.removeIcon);
 
-  // const coverImage = useCoverImage();
-
-  const enableInput = () => {
-    if (preview) return;
-
-    setIsEditing(true);
-    setTimeout(() => {
-      // setValue(title);
-      inputRef.current?.focus();
-    }, 0);
-  };
-
-  const disableInput = () => setIsEditing(false);
-
-  const onInput = (value: string) => {
-    // setValue(value);
-    setTitle(value);
-    // update({
-    //   id: initialData._id,
-    //   title: value || "Untitled"
-    // });
-  };
-
-  const onKeyDown = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      disableInput();
-    }
-  };
-
-  // const onIconSelect = (icon: string) => {
-  //   initialData.icon = icon;
-  //   setIcon(icon)
-  //   setAsChild(false);
-  //   // update({
-  //   //   id: initialData._id,
-  //   //   icon,
-  //   // });
-  // };
-
-  // const onRemoveIcon = () => {
-  //   initialData.icon = null;
-  //   setIcon(null);
-  //   console.log("done");
-  //   // removeIcon({
-  //   //   id: initialData._id
-  //   // })
-  // }
+  if(!editor) return null;
 
   return (
-    <div className="pl-[54px] group relative">
-      {/* {!!initialData.icon && !preview && (
-        <div className="flex items-center gap-x-2 group/icon pt-6">
-          <IconPicker onChange={onIconSelect}>
-            <p className="text-6xl hover:opacity-75 transition">
-              {initialData.icon}
-            </p>
-          </IconPicker>
-          <Button
-            onClick={()=>onRemoveIcon()}
-            className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground text-xs"
-            variant="outline"
-            size="icon"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )} */}
-      {/* {!!initialData.icon && preview && (
-        <p className="text-6xl pt-6">
-          {icon}
-        </p>
-      )} */}
-      {/* <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
-        {!initialData.icon && !preview && (
-          <IconPicker asChild onChange={onIconSelect}>
-            <Button
-            onClick={()=>setAsChild(true)}
-              className="text-muted-foreground text-xs"
-              variant="outline"
-              size="sm"
-            >
-              <Smile className="h-4 w-4 mr-2" />
-              Add icon
-            </Button>
-          </IconPicker>
-        )}
-    
-      </div> */}
-     {isEditing && !preview ? (
-        <TextareaAutosize
-          ref={inputRef}
-          onBlur={disableInput}
-          onKeyDown={onKeyDown}
-          value={title}
-          onChange={(e) => onInput(e.target.value)}
-          className="text-5xl bg-transparent font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF] resize-none"
-        />
-      ) : (
-        <div
-          onClick={enableInput}
-          className="pb-[11.5px] text-5xl font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF]"
+    <div className="px-4 py3 rounded-tl-md rounded-tr-md flex justify-between items-start gap-5 w-full flex-wrap border border-x-gray-700 ">
+      <div className=" flex justify-start items-center gap-5 w-full lg:w-10/12 flex-wrap">
+
+{/* bold */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleBold().run();
+        }}
+        
+        className={
+          editor.isActive("bold") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
         >
-          {title}
-        </div>
-      )} 
+          <Bold className="w-5 h-5" />
+        </button>
+
+        {/* italic  */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleItalic().run();
+        }}
+        
+        className={
+          editor.isActive("italic") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Italic className="w-5 h-5" />
+        </button>
+
+
+        {/* underline  */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleUnderline().run();
+        }}
+        
+        className={
+          editor.isActive("underline") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Underline className="w-5 h-5" />
+        </button>
+
+        {/* strikethrough  */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleStrike().run();
+        }}
+        
+        className={
+          editor.isActive("strike") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Strikethrough className="w-5 h-5" />
+        </button>
+
+        {/* heading 2  */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleHeading({level:2}).run();
+        }}
+        
+        className={
+          editor.isActive("heading",{level :2}) ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Heading2 className="w-5 h-5" />
+        </button>
+
+        {/* unordered list button */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleBulletList().run();
+        }}
+        
+        className={
+          editor.isActive("bulletList") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <List className="w-5 h-5" />
+        </button>
+
+        {/* ordered no list button */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleOrderedList().run();
+        }}
+        
+        className={
+          editor.isActive("orderedList") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <ListOrdered className="w-5 h-5" />
+        </button>
+
+        {/* blockquote button */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().toggleBlockquote().run();
+        }}
+        
+        className={
+          editor.isActive("blockquote") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Quote className="w-5 h-5" />
+        </button>
+
+        {/* code button */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().setCode().run();
+        }}
+        
+        className={
+          editor.isActive("code") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Code className="w-5 h-5" />
+        </button>
+
+        {/* undo button */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().undo().run();
+        }}
+        
+        className={
+          editor.isActive("undo") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Undo className="w-5 h-5" />
+        </button>
+
+        {/* redo button */}
+        <button
+        onClick={(e)=>{
+          e.preventDefault();
+          editor.chain().focus().redo().run();
+        }}
+        
+        className={
+          editor.isActive("redo") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+        >
+          <Redo className="w-5 h-5" />
+        </button>
+
+      </div>
+    
     </div>
   )
 }

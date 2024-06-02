@@ -10,9 +10,9 @@ interface TipTapEditorProps {
     editable?: boolean;
   };
 
-const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) => {
+const TipTapEditorShow = ({onChange, initialContent, editable }:TipTapEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit,Underline,],
+    extensions: [StarterKit,Underline],
 
     editorProps:{
       attributes:{
@@ -42,11 +42,9 @@ const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) =
 
   return (
     <div>
-      <Toolbar editor={editor} content={initialContent} />
-
     <EditorContent style={{whiteSpace:"pre-line"}}  editor={editor} />
   </div>
   );
 };
 
-export default TipTapEditor;
+export default TipTapEditorShow;

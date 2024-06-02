@@ -26,8 +26,9 @@ import { useModal } from "@/hooks/use-modal-store";
 import { PriorityModal } from "../modals/priority-modal";
 import { getMessagePriority } from "@/lib/getMessagePriority";
 // import { Toolbar } from "../toolbar";
-import EditorShow from "../editorShow";
+// import EditorShow from "../editorShow";
 import TipTapEditor from "../tiptapEditor";
+import TipTapEditorShow from "../tiptapEditorShow";
 
 
 
@@ -265,7 +266,7 @@ priorityGetter();
             {/* <Toolbar titleM={title} setTitleM={()=>{}} preview ={true}/> */}
 
            {/* <EditorShow onChange={()=>{}} initialContent={content} editable={false}/> */}
-           <TipTapEditor onChange={()=>{}} initialContent={cont} editable={false}/>
+           <TipTapEditorShow onChange={()=>{}} initialContent={cont} editable={false}/>
             </div>
           )}
 

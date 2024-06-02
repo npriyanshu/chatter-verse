@@ -57,6 +57,7 @@ export const CustomMessageModal = () => {
     }
     finally {
       setIsLoading(false);
+      setContentM("");
       setValues({ content: "", title: "", messageType: "CUSTOM" });
       onClose();
     }
@@ -91,6 +92,7 @@ export const CustomMessageModal = () => {
           <TipTapEditor
             onChange={onChange}
             initialContent={contentM}
+            editable={true}
           />
         </ScrollArea>
 
