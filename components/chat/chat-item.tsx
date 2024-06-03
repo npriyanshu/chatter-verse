@@ -25,10 +25,10 @@ import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { PriorityModal } from "../modals/priority-modal";
 import { getMessagePriority } from "@/lib/getMessagePriority";
-// import { Toolbar } from "../toolbar";
 // import EditorShow from "../editorShow";
 import TipTapEditor from "../tiptapEditor";
-import TipTapEditorShow from "../tiptapEditorShow";
+// import TipTapEditorShow from "../tiptapEditorShow";
+import parse from 'html-react-parser';
 
 
 
@@ -263,10 +263,11 @@ priorityGetter();
           {/* editor component  */}
           {!deleted && !fileUrl && !isEditing && messageType === "CUSTOM" &&(
             <div className=" mt-4">
-            {/* <Toolbar titleM={title} setTitleM={()=>{}} preview ={true}/> */}
 
            {/* <EditorShow onChange={()=>{}} initialContent={content} editable={false}/> */}
-           <TipTapEditorShow onChange={()=>{}} initialContent={cont} editable={false}/>
+           {/* <TipTapEditorShow onChange={()=>{}} initialContent={cont} editable={false}/> */}
+           <div>{parse(cont)}</div>;
+
             </div>
           )}
 
@@ -274,7 +275,6 @@ priorityGetter();
           {!deleted && !fileUrl && isEditing && messageType === "CUSTOM" &&(
          <div className=" flex flex-col gap-3">
              <div className=" mt-4">
-            {/* <Toolbar titleM={title} setTitleM={setTit} preview ={false}/> */}
 
            {/* <EditorShow onChange={setCont} initialContent={content} editable={true}/> */}
            <TipTapEditor onChange={(reason : any)=>{ updateContentData(reason)}} initialContent={cont} editable={true}/>

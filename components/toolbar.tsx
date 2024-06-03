@@ -1,4 +1,5 @@
 import { type Editor } from "@tiptap/react";
+import {useCallback} from "react";
 
 import {
 Bold,
@@ -8,7 +9,7 @@ List,
 ListOrdered,
 Heading2,
 Underline,
-Quote,
+ImageIcon,
 Undo,
 Redo,
 Code,
@@ -23,6 +24,14 @@ export const Toolbar = ({
   editor,
   content
 }: ToolbarProps) => {
+
+  const addImage = useCallback(() => {
+    const url = window.prompt('URL')
+
+    if (url) {
+      editor?.chain().focus().setImage({ src: url }).run()
+    }
+  }, [editor])
 
 
   if(!editor) return null;
@@ -130,18 +139,18 @@ export const Toolbar = ({
           <ListOrdered className="w-5 h-5" />
         </button>
 
-        {/* blockquote button */}
+        {/* Image button */}
         <button
         onClick={(e)=>{
           e.preventDefault();
-          editor.chain().focus().toggleBlockquote().run();
+          addImage();
         }}
         
         className={
           editor.isActive("blockquote") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
         }  
         >
-          <Quote className="w-5 h-5" />
+          <ImageIcon className="w-5 h-5" />
         </button>
 
         {/* code button */}

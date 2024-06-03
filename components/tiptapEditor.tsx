@@ -3,6 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import Underline from "@tiptap/extension-underline";
 import { Toolbar } from './toolbar';
+import Image from '@tiptap/extension-image'
 
 interface TipTapEditorProps {
     onChange: (value: any) => void;
@@ -12,7 +13,7 @@ interface TipTapEditorProps {
 
 const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit,Underline,],
+    extensions: [StarterKit,Underline,Image],
 
     editorProps:{
       attributes:{
