@@ -12,8 +12,10 @@ Underline,
 ImageIcon,
 Undo,
 Redo,
-Code,
+Paintbrush,
+// Code,
 } from "lucide-react";
+
 
 interface ToolbarProps {
   editor:Editor | null;
@@ -26,7 +28,7 @@ export const Toolbar = ({
 }: ToolbarProps) => {
 
   const addImage = useCallback(() => {
-    const url = window.prompt('URL')
+    const url = window.prompt('Enter Image URL')
 
     if (url) {
       editor?.chain().focus().setImage({ src: url }).run()
@@ -37,7 +39,7 @@ export const Toolbar = ({
   if(!editor) return null;
 
   return (
-    <div className="px-4 py3 rounded-tl-md rounded-tr-md flex justify-between items-start gap-5 w-full flex-wrap border border-x-gray-700 ">
+    <div className="px-4 py3 rounded-tl-md rounded-tr-md flex justify-center items-center gap-5 w-full h-[50px] bg-black flex-wrap border border-x-gray-700 ">
       <div className=" flex justify-start items-center gap-5 w-full lg:w-10/12 flex-wrap">
 
 {/* bold */}
@@ -154,7 +156,7 @@ export const Toolbar = ({
         </button>
 
         {/* code button */}
-        <button
+        {/* <button
         onClick={(e)=>{
           e.preventDefault();
           editor.chain().focus().setCode().run();
@@ -165,7 +167,32 @@ export const Toolbar = ({
         }  
         >
           <Code className="w-5 h-5" />
-        </button>
+        </button> */}
+
+        {/* color picker */}
+
+        <input
+        type="color"
+        onChange={event => {
+          const target = event.target as HTMLInputElement;
+          editor.chain().focus().setColor(target.value).run();
+        }}
+        value={editor.getAttributes('textStyle').color || '#fa0303'} // Default to black if no color set
+        data-testid="setColor"
+      />
+
+      <button
+        onClick={() => editor.chain().focus().unsetColor().run()}
+        data-testid="unsetColor"
+        
+        className={
+          editor.isActive("undo") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
+        }  
+      >
+        <Paintbrush className="w-5 h-5" />
+      </button>
+
+        
 
         {/* undo button */}
         <button
