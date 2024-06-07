@@ -25,7 +25,7 @@ const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) =
 
     editorProps:{
       attributes:{
-        class: "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none flex flex-col px-4 py-3 justify-start border-b border-r border-l border-gray-700"
+        class: "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none dark:text-white flex flex-col px-4 py-3 justify-start border-b border-r border-l border-gray-700"
       },
     },
     content: initialContent,
@@ -50,7 +50,7 @@ const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) =
 
 
   return (
-    <div>
+    <div className=' relative'>
       <Toolbar editor={editor} content={initialContent} />
 
   {

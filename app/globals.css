@@ -29,6 +29,11 @@ ol li {
   list-style-type: decimal; /* Numbers for ordered lists */
 }
 
+.toolbarSpan{
+  display: flex;
+ gap: 20px;
+}
+
 
 @layer base {
   :root {

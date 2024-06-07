@@ -39,11 +39,12 @@ export const Toolbar = ({
   if(!editor) return null;
 
   return (
-    <div className="px-4 py3 rounded-tl-md rounded-tr-md flex justify-center items-center gap-5 w-full h-[50px] bg-black flex-wrap border border-x-gray-700 ">
-      <div className=" flex justify-start items-center gap-5 w-full lg:w-10/12 flex-wrap">
+    <div className="px-4 py3 flex text-black justify-center items-center gap-5 w-full h-[50px] dark:bg-black dark:text-white flex-wrap border">
+      <div className=" flex justify-between items-center gap-5 w-full lg:w-10/12 flex-wrap">
 
+<span className="toolbarSpan">
 {/* bold */}
-        <button
+<button
         onClick={(e)=>{
           e.preventDefault();
           editor.chain().focus().toggleBold().run();
@@ -140,7 +141,9 @@ export const Toolbar = ({
         >
           <ListOrdered className="w-5 h-5" />
         </button>
+</span>
 
+<span className="toolbarSpan">
         {/* Image button */}
         <button
         onClick={(e)=>{
@@ -155,19 +158,6 @@ export const Toolbar = ({
           <ImageIcon className="w-5 h-5" />
         </button>
 
-        {/* code button */}
-        {/* <button
-        onClick={(e)=>{
-          e.preventDefault();
-          editor.chain().focus().setCode().run();
-        }}
-        
-        className={
-          editor.isActive("code") ? "text-white bg-sky-700 p-2 rounded-lg" : "text-gray-400"
-        }  
-        >
-          <Code className="w-5 h-5" />
-        </button> */}
 
         {/* color picker */}
 
@@ -191,9 +181,10 @@ export const Toolbar = ({
       >
         <Paintbrush className="w-5 h-5" />
       </button>
-
+</span>
         
-
+<span className="toolbarSpan">
+  
         {/* undo button */}
         <button
         onClick={(e)=>{
@@ -222,6 +213,7 @@ export const Toolbar = ({
           <Redo className="w-5 h-5" />
         </button>
 
+</span>
       </div>
     
     </div>

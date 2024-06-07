@@ -77,7 +77,7 @@ export const CustomMessageModal = () => {
 
 
     <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-x-hidden overflow-y-auto max-w-[70vw] min-h-[80vh] max-h-[90vh]">
+      <DialogContent className="bg-white text-black dark:text-white dark:bg-[#26282b] p-0 overflow-x-hidden overflow-y-auto max-w-[70vw] min-h-[80vh] max-h-[90vh]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             Send Custom Message
@@ -85,10 +85,6 @@ export const CustomMessageModal = () => {
         </DialogHeader>
 
         <ScrollArea className=" h-[300px] max-h-[420px] overflow-x-hidden overflow-y-auto">
-          {/* <Editor
-            onChange={onChange}
-            initialContent={contentM}
-          /> */}
           <TipTapEditor
             onChange={onChange}
             initialContent={contentM}
@@ -96,7 +92,7 @@ export const CustomMessageModal = () => {
           />
         </ScrollArea>
 
-        <DialogFooter className="bg-gray-100 px-6 py-4">
+        <DialogFooter className="bg-gray-100 px-6 py-4 dark:text-white dark:bg-[#26282b]">
           <Button variant="primary" onClick={() => onSend()} disabled={isLoading} >
             Send
           </Button>
