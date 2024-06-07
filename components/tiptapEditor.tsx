@@ -54,8 +54,8 @@ const TipTapEditor = ({onChange, initialContent, editable }:TipTapEditorProps) =
       <Toolbar editor={editor} content={initialContent} />
 
   {
-    editor && <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-    
+    editor && <BubbleMenu className='w-[200px] flex gap-4 justify-center items-center ' editor={editor}  tippyOptions={{ duration: 100 }}>
+     
 {/* bold */}
 <button
         onClick={(e)=>{

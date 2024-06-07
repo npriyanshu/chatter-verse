@@ -10,10 +10,13 @@ body,
   height: 100%;
 }
 /* Example CSS */
-h1 { font-size: 2em; }
-h2 { font-size: 1.5em; }
-h3 { font-size: 1.17em; }
-
+h1 { font-size: 2em; 
+}
+h2 { font-size: 1.5em; 
+  }
+  h3 { font-size: 1.17em; 
+  }
+  
 /* Example CSS */
 ul, ol {
   margin: 0;

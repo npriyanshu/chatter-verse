@@ -37,9 +37,10 @@ export const Toolbar = ({
 
 
   if(!editor) return null;
-
+  // dark:bg-black dark:text-white
+  // text-black
   return (
-    <div className="px-4 py3 flex text-black justify-center items-center gap-5 w-full h-[50px] dark:bg-black dark:text-white flex-wrap border">
+    <div className="px-4 py3 flex  justify-center items-center gap-5 w-full h-[50px]  flex-wrap border">
       <div className=" flex justify-between items-center gap-5 w-full lg:w-10/12 flex-wrap">
 
 <span className="toolbarSpan">
