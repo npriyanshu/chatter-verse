@@ -4,7 +4,8 @@ import { FileIcon, X } from "lucide-react";
 import Image from "next/image";
 
 import { UploadDropzone } from "@/lib/uploadthing";
-
+import { useUploadThing } from "@/lib/uploadthing";
+import { SingleImageDropzone } from "@/components/single-image-dropzone";
 
 interface FileUploadProps {
   onChange: (url?: string) => void;
@@ -17,6 +18,7 @@ export const FileUpload = ({
   value,
   endpoint
 }: FileUploadProps) => {
+  const { startUpload, isUploading } = useUploadThing(endpoint);
   const fileType = value?.split(".").pop();
 
   if (value && fileType !== "pdf") {
@@ -43,7 +45,7 @@ export const FileUpload = ({
     return (
       <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
         <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
-        <a 
+        <a
           href={value}
           target="_blank"
           rel="noopener noreferrer"
@@ -59,6 +61,25 @@ export const FileUpload = ({
           <X className="h-4 w-4" />
         </button>
       </div>
+    )
+  }
+
+  if (endpoint === "serverImage") {
+    return (
+      <SingleImageDropzone
+        width={200}
+        height={200}
+        value={value}
+        disabled={isUploading}
+        onChange={async (file) => {
+          if (file) {
+            const res = await startUpload([file]);
+            if (res && res[0]) {
+              onChange(res[0].url);
+            }
+          }
+        }}
+      />
     )
   }
 
